@@ -19,6 +19,7 @@ from calendar import isleap
 
 def solve(a, b):
     extended_weekend_months = []
+    isweekend_day = 0
     for i in range(a, b+1):
         for months in range(1, 13):
             # se o primeiro dia do mes for sexta fazemos a lógica
@@ -27,22 +28,44 @@ def solve(a, b):
                     for days in range(1, 32):
                         date_to_check = datetime.date(year=i, month=months, day=days)
                         if date_to_check.weekday() in [4, 5, 6]:
-                            extended_weekend_months.append(date_to_check.ctime())
+                            isweekend_day += 1
+                            #extended_weekend_months.append(date_to_check.ctime())
+                    if isweekend_day == 15:
+                        extended_weekend_months.append(datetime.date(year=i, month=months, day=1).strftime("%b"))
+                        isweekend_day = 0
+                    else:
+                        isweekend_day = 0
                 elif months in [4, 6, 9, 11]:
                     for days in range(1, 31): # 30 dias
                         date_to_check = datetime.date(year=i, month=months, day=days)
-                        if date_to_check.weekday() == 4:
-                            extended_weekend_months.append(date_to_check.ctime())
+                        if date_to_check.weekday() in [4, 5, 6]:
+                            isweekend_day += 1
+                            # extended_weekend_months.append(date_to_check.ctime())
+                    if isweekend_day == 15:
+                        extended_weekend_months.append(datetime.date(year=i, month=months, day=1).strftime("%b"))
+                        isweekend_day = 0
+                    else:
+                        isweekend_day = 0
                 elif months == 2 and isleap(i):
                     for days in range(1, 30): # fev com 29 dias
                         date_to_check = datetime.date(year=i, month=months, day=days)
-                        if date_to_check.weekday() == 4:
-                            extended_weekend_months.append(date_to_check.ctime())
+                        if date_to_check.weekday() in [4, 5, 6]:
+                            isweekend_day += 1
+                    if isweekend_day == 15:
+                        extended_weekend_months.append(datetime.date(year=i, month=months, day=1).strftime("%b"))
+                        isweekend_day = 0
+                    else:
+                        isweekend_day = 0
                 elif months == 2 and not isleap(i): # fev com 28 dias
                     for days in range(1, 29):
                         date_to_check = datetime.date(year=i, month=months, day=days)
-                        if date_to_check.weekday() == 4:
-                            extended_weekend_months.append(date_to_check.ctime())
+                        if date_to_check.weekday() in [4, 5, 6]:
+                            isweekend_day += 1
+                    if isweekend_day == 15:
+                        extended_weekend_months.append(datetime.date(year=i, month=months, day=1).strftime("%b"))
+                        isweekend_day = 0
+                    else:
+                        isweekend_day = 0
 
     rt_tp = tuple([extended_weekend_months[0], extended_weekend_months[-1], len(extended_weekend_months)])
     return rt_tp
@@ -51,4 +74,4 @@ def solve(a, b):
 
 
 if __name__ == '__main__':
-    print(solve(2016, 2020))
+    print(solve(1800, 2500))
